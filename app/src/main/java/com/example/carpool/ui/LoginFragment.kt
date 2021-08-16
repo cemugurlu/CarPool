@@ -31,7 +31,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), LoginInterface {
         ).get(LoginViewModel::class.java)
         binding.viewModel = viewModel
         setObservers()
-        //binding.etEmailField
+        //binding.etEmailField test
         return binding.root
     }
 
@@ -44,7 +44,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), LoginInterface {
 
     override fun onNavigateToMainFragment() {
         parentFragmentManager.commit {
-            replace<MainFragment>(R.id.fragment_main_container)
+            replace<RentFragment>(R.id.fragment_main_container)
         }
     }
 
