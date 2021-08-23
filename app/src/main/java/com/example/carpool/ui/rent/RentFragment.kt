@@ -1,4 +1,4 @@
-package com.example.carpool.ui
+package com.example.carpool.ui.rent
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -11,21 +11,20 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.carpool.R
 import com.example.carpool.databinding.FragmentRentBinding
 import com.example.carpool.model.CarModel
 import java.util.*
 
-class RentFragment : Fragment(R.layout.fragment_rent) {
+class RentFragment : Fragment(R.layout.fragment_rent), RentInterface {
 
     private lateinit var binding: FragmentRentBinding
-
+    private lateinit var viewModel: RentViewModel
     val myCalendar = Calendar.getInstance()
-    val year = myCalendar.get(Calendar.YEAR)
-    val month = myCalendar.get(Calendar.MONTH)
-    val day = myCalendar.get(Calendar.DAY_OF_MONTH)
-    val hour = myCalendar.get(Calendar.HOUR)
-    val minute = myCalendar.get(Calendar.MINUTE)
+    private val year = myCalendar.get(Calendar.YEAR)
+    private val month = myCalendar.get(Calendar.MONTH)
+    private val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n")
@@ -34,7 +33,13 @@ class RentFragment : Fragment(R.layout.fragment_rent) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(
+            this,
+            RentViewModelFactory(this)
+        ).get(RentViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rent, container, false)
+        binding.myViewModel = viewModel
+
         val cars = ArrayList<CarModel>()
         cars.add(CarModel(name = "test", index = 0))
         cars.add(CarModel(name = "test1", index = 1))
@@ -52,50 +57,47 @@ class RentFragment : Fragment(R.layout.fragment_rent) {
             it.index > 4
         }*/
 
-        context?.let {
+        context?.let { // unwrap the context
             binding.rvCarList.adapter = CarRecyclerAdapter(it, cars = cars, beginIndex = 0)
 
         }
 
-
-        
-        // access to buttonView
-        binding.buttonGetDate.setOnClickListener {
-            context?.let {
-                createDatePicker(context = it) { view, year, monthOfYear, dayOfMonth ->
-                    binding.buttonGetDate.text = " $dayOfMonth $monthOfYear $year"
-                }
-            }?.show() // Null pointer exception prevention == myDatePicker.show()
-        }
-        binding.buttonReturnDate.setOnClickListener {
-            context?.let {
-                createDatePicker(context = it) { view, year, monthOfYear, dayOfMonth ->
-                    binding.buttonReturnDate.text = " $dayOfMonth $monthOfYear $year"
-                }
-            }?.show() // Null pointer exception prevention == myDatePicker.show()
-        }
+        /*viewModel.buttonGetDateText.observe(viewLifecycleOwner) { newValue ->
+            Log.d("asd", newValue)
+        }*/
 
 
         return binding.root
 
     }
 
-
-    //return view
-
-
     private fun createDatePicker(
         context: Context,
         listener: DatePickerDialog.OnDateSetListener
     ): DatePickerDialog {
-        return DatePickerDialog(
-            context,
-            listener,
-            year,
-            month,
-            day
-        )
+        return DatePickerDialog(context, listener, year, month, day)
     }
+
+    override fun openGetDatePickerDialog() {
+        context?.let {
+            createDatePicker(context = it) { view, year, monthOfYear, dayOfMonth ->
+                val monthOfYear = monthOfYear + 1
+                binding.buttonGetDate.text = " $dayOfMonth $monthOfYear $year"
+            }
+        }?.show()
+
+    }
+
+    override fun openReturnDatePickerDialog() {
+        context?.let {
+            createDatePicker(context = it) { view, year, monthOfYear, dayOfMonth ->
+                val monthOfYear = monthOfYear + 1
+                binding.buttonReturnDate.text = " $dayOfMonth $monthOfYear $year"
+            }
+        }?.show()
+
+    }
+
 
 }
 

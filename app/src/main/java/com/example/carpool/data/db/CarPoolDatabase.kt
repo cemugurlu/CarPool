@@ -1,17 +1,17 @@
-package com.example.carpool.db
+package com.example.carpool.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.carpool.model.UserEntity
 
 
-@Database(entities = [User::class, Car::class], version = 1)
+@Database(entities = [UserEntity::class, Car::class], version = 1)
 abstract class CarPoolDatabase: RoomDatabase() {
 
-    abstract val carPoolDao: CarPoolDao
+    abstract fun carPoolDao(): CarPoolDao
 
-    // TODO: Singleton mı yapıcaz emin değilim, google it
     companion object {
         @Volatile
         private var INSTANCE: CarPoolDatabase? = null

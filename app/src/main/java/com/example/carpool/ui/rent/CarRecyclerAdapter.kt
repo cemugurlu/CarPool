@@ -1,4 +1,4 @@
-package com.example.carpool.ui
+package com.example.carpool.ui.rent
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.carpool.R
 import com.example.carpool.model.CarModel
 
+/**
+ * Too much theoritical things covered about android framework
+ */
 class CarRecyclerAdapter(val context: Context, val cars: ArrayList<CarModel>, val beginIndex: Int): RecyclerView.Adapter<CarRecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

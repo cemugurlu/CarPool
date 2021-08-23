@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="myViewModel"
+            type="com.example.carpool.ui.rent.RentViewModel" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,6 +43,7 @@
             android:layout_width="127dp"
             android:layout_height="37dp"
             android:text="Get"
+            android:onClick="@{()-> myViewModel.onButtonGetDateClick()}"
             app:layout_constraintBottom_toBottomOf="@id/tv_get_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_get_date"
@@ -46,6 +55,7 @@
             android:layout_width="127dp"
             android:layout_height="37dp"
             android:text="Return"
+            android:onClick="@{()-> myViewModel.onButtonReturnDateClick()}"
             app:layout_constraintBottom_toBottomOf="@id/tv_return_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_return_date"
